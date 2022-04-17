@@ -4,23 +4,20 @@ namespace Autopick.Api.Domain
 {
     public class Modality : Entity
     {
+        private Modality() { }
         public Modality(string name, string description)
         {
             Name = name;
             Description = description;
             Skills = new List<Skill>();
         }
-        public Modality(string name, string description, IList<Skill> skills)
-        {
-            Name = name;
-            Description = description;
-            Skills = skills;
-        }
-
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public IList<Skill> Skills { get; private set; }
-
+        public ICollection<Skill> Skills { get; private set; }
+        public ICollection<Match> Matches { get; private set; }
+        public ICollection<PlayerOverall> PlayerOveralls { get; private set; }
+        public ICollection<PlayerSkillRating> PlayerRatings { get; private set; }
+        public ICollection<Team> Teams { get; private set; }
         public void AddSkill(Skill skill)
         {
             Skills.Add(skill);

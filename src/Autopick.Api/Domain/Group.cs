@@ -4,17 +4,18 @@ namespace Autopick.Api.Domain
 {
     public class Group : Entity
     {
-        public Group(Account account, string name)
+        private Group() { }
+        public Group(string name, Guid accountId)
         {
-
-            Account = account;
             Name = name;
+            AccountId = accountId;
             Players = new List<Player>();
         }
-        public Account Account { get; private set; }
         public string Name { get; private set; }
-        public IList<Player> Players { get; private set; }
-
+        public Guid AccountId { get; private set; }
+        public Account Account { get; private set; }
+        public ICollection<Player> Players { get; private set; }
+        public ICollection<Match> Matches { get; private set; }
         public void AddPlayer(Player player)
         {
             Players.Add(player);
