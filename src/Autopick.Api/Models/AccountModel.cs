@@ -1,6 +1,4 @@
-﻿using Autopick.Api.Models;
-
-namespace Autopick.Api.ViewModels
+﻿namespace Autopick.Api.Models
 {
     public class AccountModel : BaseModel
     {

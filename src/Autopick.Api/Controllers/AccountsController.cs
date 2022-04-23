@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Autopick.Api.Data;
 using Autopick.Api.Domain;
-using Autopick.Api.ViewModels;
+using Autopick.Api.Models;
 using AutoMapper;
 
 namespace Autopick.Api.Controllers

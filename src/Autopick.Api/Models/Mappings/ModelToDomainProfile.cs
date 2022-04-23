@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Autopick.Api.Domain;
-using Autopick.Api.ViewModels;
-
 namespace Autopick.Api.Models.Mappings
 {
     public class ModelToDomainProfile : Profile
@@ -9,6 +7,7 @@ namespace Autopick.Api.Models.Mappings
         public ModelToDomainProfile()
         {
             CreateMap<Account, AccountModel>().ReverseMap();
+            CreateMap<Group, GroupModel>().ReverseMap();
         }
     }
 }

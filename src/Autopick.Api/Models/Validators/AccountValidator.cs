@@ -1,4 +1,4 @@
-﻿using Autopick.Api.ViewModels;
+﻿using Autopick.Api.Models;
 using FluentValidation;
 
 namespace Autopick.Api.Models.Validators
