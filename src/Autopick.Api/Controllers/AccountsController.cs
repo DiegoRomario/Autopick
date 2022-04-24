@@ -62,13 +62,13 @@ namespace Autopick.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(AccountModel account)
+        public async Task<ActionResult<AccountModel>> PostAccount(AccountModel account)
         {
             Account entity = _mapper.Map<Account>(account);
             _context.Accounts.Add(entity);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAccount", new { id = entity.Id }, entity);
+            account.Id = entity.Id;
+            return CreatedAtAction("GetAccount", new { id = entity.Id }, account);
         }
 
         [HttpDelete("{id}")]

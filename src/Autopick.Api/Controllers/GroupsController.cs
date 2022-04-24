@@ -62,13 +62,13 @@ namespace Autopick.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Group>> PostGroup(GroupModel group)
+        public async Task<ActionResult<GroupModel>> PostGroup(GroupModel group)
         {
             Group entity = _mapper.Map<Group>(group);
             _context.Groups.Add(entity);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGroup", new { id = @group.Id }, @group);
+            group.Id = entity.Id;
+            return CreatedAtAction("GetGroup", new { id = group.Id }, group);
         }
 
         [HttpDelete("{id}")]
