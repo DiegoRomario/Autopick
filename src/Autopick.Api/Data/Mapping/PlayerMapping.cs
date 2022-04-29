@@ -21,6 +21,19 @@ namespace Autopick.Api.Data.Mapping
                    .HasColumnName("BirthDate")
                    .IsRequired();
 
+            builder.Property(p => p.Foot)
+                   .HasColumnName("Foot")
+                   .HasColumnType("TINYINT")
+                   .IsRequired();
+
+            builder.Property(p => p.Weight)
+                   .HasColumnName("Weight")
+                   .IsRequired();
+
+            builder.Property(p => p.Height)
+                   .HasColumnName("Height")
+                   .IsRequired();
+
             builder.HasMany(p => p.PlayerOveralls)
                    .WithOne(p => p.Player)
                    .HasForeignKey(p => p.PlayerId);

@@ -10,6 +10,7 @@ namespace Autopick.Api.Models.Mappings
             CreateMap<Group, GroupModel>().ReverseMap();
             CreateMap<Modality, ModalityModel>().ReverseMap();
             CreateMap<Skill, SkillModel>().ReverseMap();
+            CreateMap<Player, PlayerModel>().ReverseMap();
         }
     }
 }
