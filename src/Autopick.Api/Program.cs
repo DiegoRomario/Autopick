@@ -2,6 +2,7 @@ using Autopick.Api.Data;
 using Autopick.Api.Models.Mappings;
 using System.Reflection;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,12 @@ builder.Services.AddControllers()
                 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<AutopickDBContext>();
+#region SQL Server
+//builder.Services.AddDbContext<AutopickDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+#endregion
+#region SQLite
+builder.Services.AddDbContext<AutopickDBContext>();
+#endregion
 builder.Services.AddAutoMapper(typeof(ModelToDomainProfile));
 
 var app = builder.Build();

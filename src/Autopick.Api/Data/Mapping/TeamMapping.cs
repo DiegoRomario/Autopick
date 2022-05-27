@@ -24,14 +24,7 @@ namespace Autopick.Api.Data.Mapping
 
             builder.HasMany(p => p.Players)
                    .WithMany(p => p.Teams)
-                   .UsingEntity<Dictionary<string, object>>("PlayerTeam", j => j
-                   .HasOne<Player>()
-                   .WithMany()
-                   .HasForeignKey("PlayerId"),
-                   j => j
-                   .HasOne<Team>()
-                   .WithMany()
-                   .HasForeignKey("TeamId"));
+                   .UsingEntity<PlayerTeam>();
 
             builder.HasMany(p => p.Matches)
                    .WithMany(p => p.Teams)

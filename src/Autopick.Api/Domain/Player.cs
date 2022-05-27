@@ -6,6 +6,7 @@ namespace Autopick.Api.Domain
     public class Player : Entity
     {
         private Player() { }
+
         public Player(string name, DateTime birthDate, EFoot foot, double height, double weight)
         {
             Name = name;
@@ -23,5 +24,6 @@ namespace Autopick.Api.Domain
         public ICollection<PlayerSkillRating> PlayerRatings { get; private set; }
         public ICollection<Team> Teams { get; private set; }
         public ICollection<Group> Groups { get; private set; }
+        public ICollection<PlayerTeam> PlayerTeam { get; private set; }
     }
 }

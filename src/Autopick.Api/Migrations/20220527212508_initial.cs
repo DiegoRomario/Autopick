@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Autopick.Api.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,10 @@ namespace Autopick.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "VARCHAR(60)", nullable: false),
-                    BirthDate = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Foot = table.Column<int>(type: "TINYINT", nullable: false),
+                    Height = table.Column<double>(type: "REAL", nullable: false),
+                    Weight = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,8 +65,7 @@ namespace Autopick.Api.Migrations
                         name: "FK_Group_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -82,8 +84,7 @@ namespace Autopick.Api.Migrations
                         name: "FK_Skill_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -102,8 +103,7 @@ namespace Autopick.Api.Migrations
                         name: "FK_Team_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -122,14 +122,12 @@ namespace Autopick.Api.Migrations
                         name: "FK_PlayerOverall_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PlayerOverall_Player_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Player",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -148,14 +146,12 @@ namespace Autopick.Api.Migrations
                         name: "FK_Match_Group_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Group",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Match_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -186,24 +182,23 @@ namespace Autopick.Api.Migrations
                 name: "PlayerTeam",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     PlayerId = table.Column<Guid>(type: "TEXT", nullable: false),
                     TeamId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerTeam", x => new { x.PlayerId, x.TeamId });
+                    table.PrimaryKey("PK_PlayerTeam", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PlayerTeam_Player_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Player",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PlayerTeam_Team_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Team",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -234,14 +229,12 @@ namespace Autopick.Api.Migrations
                         name: "FK_PlayerSkillRating_PlayerOverall_PlayerOverallId",
                         column: x => x.PlayerOverallId,
                         principalTable: "PlayerOverall",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PlayerSkillRating_Skill_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skill",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -317,6 +310,11 @@ namespace Autopick.Api.Migrations
                 name: "IX_PlayerSkillRating_SkillId",
                 table: "PlayerSkillRating",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayerTeam_PlayerId",
+                table: "PlayerTeam",
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerTeam_TeamId",

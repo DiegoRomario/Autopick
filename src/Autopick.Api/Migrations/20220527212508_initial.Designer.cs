@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Autopick.Api.Migrations
 {
     [DbContext(typeof(AutopickDBContext))]
-    [Migration("20220417221457_Initial")]
-    partial class Initial
+    [Migration("20220527212508_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,14 +107,26 @@ namespace Autopick.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT")
                         .HasColumnName("BirthDate");
+
+                    b.Property<int>("Foot")
+                        .HasColumnType("TINYINT")
+                        .HasColumnName("Foot");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("REAL")
+                        .HasColumnName("Height");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("VARCHAR(60)")
                         .HasColumnName("Name");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("REAL")
+                        .HasColumnName("Weight");
 
                     b.HasKey("Id");
 
@@ -177,6 +189,27 @@ namespace Autopick.Api.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("PlayerSkillRating", (string)null);
+                });
+
+            modelBuilder.Entity("Autopick.Api.Domain.PlayerTeam", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("PlayerTeam", (string)null);
                 });
 
             modelBuilder.Entity("Autopick.Api.Domain.Skill", b =>
@@ -243,21 +276,6 @@ namespace Autopick.Api.Migrations
                     b.ToTable("PlayerGroup");
                 });
 
-            modelBuilder.Entity("PlayerTeam", b =>
-                {
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("PlayerId", "TeamId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("PlayerTeam");
-                });
-
             modelBuilder.Entity("TeamMatch", b =>
                 {
                     b.Property<Guid>("MatchId")
@@ -278,7 +296,6 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.Account", "Account")
                         .WithMany("Groups")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -289,13 +306,11 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.Group", "Group")
                         .WithMany("Matches")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Autopick.Api.Domain.Modality", "Modality")
                         .WithMany("Matches")
                         .HasForeignKey("ModalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Group");
@@ -308,13 +323,11 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.Modality", "Modality")
                         .WithMany("PlayerOveralls")
                         .HasForeignKey("ModalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Autopick.Api.Domain.Player", "Player")
                         .WithMany("PlayerOveralls")
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Modality");
@@ -335,13 +348,11 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.PlayerOverall", "PlayerOverall")
                         .WithMany("PlayerSkillRatings")
                         .HasForeignKey("PlayerOverallId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Autopick.Api.Domain.Skill", "Skill")
                         .WithMany("PlayerRatings")
                         .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PlayerOverall");
@@ -349,12 +360,28 @@ namespace Autopick.Api.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("Autopick.Api.Domain.PlayerTeam", b =>
+                {
+                    b.HasOne("Autopick.Api.Domain.Player", "Player")
+                        .WithMany("PlayerTeam")
+                        .HasForeignKey("PlayerId")
+                        .IsRequired();
+
+                    b.HasOne("Autopick.Api.Domain.Team", "Team")
+                        .WithMany("PlayerTeam")
+                        .HasForeignKey("TeamId")
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("Autopick.Api.Domain.Skill", b =>
                 {
                     b.HasOne("Autopick.Api.Domain.Modality", "Modality")
                         .WithMany("Skills")
                         .HasForeignKey("ModalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Modality");
@@ -365,7 +392,6 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.Modality", "Modality")
                         .WithMany("Teams")
                         .HasForeignKey("ModalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Modality");
@@ -382,21 +408,6 @@ namespace Autopick.Api.Migrations
                     b.HasOne("Autopick.Api.Domain.Player", null)
                         .WithMany()
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PlayerTeam", b =>
-                {
-                    b.HasOne("Autopick.Api.Domain.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Autopick.Api.Domain.Team", null)
-                        .WithMany()
-                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -444,6 +455,8 @@ namespace Autopick.Api.Migrations
                     b.Navigation("PlayerOveralls");
 
                     b.Navigation("PlayerRatings");
+
+                    b.Navigation("PlayerTeam");
                 });
 
             modelBuilder.Entity("Autopick.Api.Domain.PlayerOverall", b =>
@@ -454,6 +467,11 @@ namespace Autopick.Api.Migrations
             modelBuilder.Entity("Autopick.Api.Domain.Skill", b =>
                 {
                     b.Navigation("PlayerRatings");
+                });
+
+            modelBuilder.Entity("Autopick.Api.Domain.Team", b =>
+                {
+                    b.Navigation("PlayerTeam");
                 });
 #pragma warning restore 612, 618
         }

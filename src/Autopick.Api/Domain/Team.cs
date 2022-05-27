@@ -17,14 +17,24 @@ namespace Autopick.Api.Domain
         public ICollection<Player> Players { get; private set; }
         public int Overall { get; private set; }
         public ICollection<Match> Matches { get; private set; }
+        public ICollection<PlayerTeam> PlayerTeam { get; private set; }
 
         public void AddPlayer(Player player)
         {
             Players.Add(player);
         }
+        public void SetPlayers(ICollection<Player> players)
+        {
+            Players = players;
+        }
         public void RemovePlayer(Player player)
         {
             Players.Remove(player);
+        }
+
+        public void RemovePlayers()
+        {
+            Players.Clear();
         }
         public void CalculateOverall()
         {
