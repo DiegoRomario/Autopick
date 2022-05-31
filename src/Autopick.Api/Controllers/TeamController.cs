@@ -32,7 +32,7 @@ namespace Autopick.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamModel>> GetTeam(Guid id)
         {
-            Team team = await _context.Teams.FindAsync(id);
+            Team team = await _context.Teams.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == id);
             if (team == null) return NotFound();
 
             var response = _mapper.Map<TeamModel>(team);
