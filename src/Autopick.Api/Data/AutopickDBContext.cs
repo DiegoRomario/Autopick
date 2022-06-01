@@ -6,17 +6,17 @@ namespace Autopick.Api.Data
     public class AutopickDBContext : DbContext
     {
         #region SQL Server
-        //public AutopickDBContext(DbContextOptions<AutopickDBContext> options)
-        //    : base(options)
-        //{
-        //}
+        public AutopickDBContext(DbContextOptions<AutopickDBContext> options)
+            : base(options)
+        {
+        }
         #endregion
 
-        #region SQL Server
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(@"Data Source=..\..\db\Autopick.db");
-        }
+        #region SQLite
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlite(@"Data Source=..\..\db\Autopick.db");
+        //}
         #endregion
 
         public DbSet<Account> Accounts { get; set; }
