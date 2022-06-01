@@ -15,10 +15,10 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 #region SQL Server
-//builder.Services.AddDbContext<AutopickDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AutopickDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 #endregion
 #region SQLite
-builder.Services.AddDbContext<AutopickDBContext>();
+//builder.Services.AddDbContext<AutopickDBContext>();
 #endregion
 builder.Services.AddAutoMapper(typeof(ModelToDomainProfile));
 
