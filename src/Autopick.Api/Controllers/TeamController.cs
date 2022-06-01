@@ -23,7 +23,7 @@ namespace Autopick.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamModel>>> GetTeam()
         {
-            List<Team> teams = await _context.Teams.Include(x => x.Players).ToListAsync();
+            List<Team> teams = await _context.Teams.Include(x => x.Players).Include(x => x.Modality).ToListAsync();
             IEnumerable<TeamModel> response = _mapper.Map<IEnumerable<TeamModel>>(teams);
 
             return Ok(response);
@@ -32,7 +32,7 @@ namespace Autopick.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamModel>> GetTeam(Guid id)
         {
-            Team team = await _context.Teams.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == id);
+            Team team = await _context.Teams.Include(x => x.Players).Include(x => x.Modality).FirstOrDefaultAsync(x => x.Id == id);
             if (team == null) return NotFound();
 
             var response = _mapper.Map<TeamModel>(team);

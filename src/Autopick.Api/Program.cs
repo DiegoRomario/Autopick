@@ -3,6 +3,7 @@ using Autopick.Api.Models.Mappings;
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,12 @@ builder.Services.AddControllers()
                 .AddFluentValidation(options =>
                 {
                     options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                })
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 #region SQL Server
